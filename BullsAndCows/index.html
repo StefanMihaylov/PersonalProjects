@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Bulls and Cows</title>
+    <link href="styles/style.css" rel="stylesheet" />
+</head>
+<body>
+    <div id="background"></div>
+    <div id="wrapper">
+        <h2> Ugly "Sheeps and Rams" game</h2>
+        <p>Please, run the game only on Google Chrome</p>
+        <div>
+            <button id="new-game">New game</button>
+            <label for="number">Enter number:</label>
+            <input type="number" id="number" name="number" placeholder="1234" />
+            <div id="message-box"></div>
+            <table id="result">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Number</th>
+                        <th>Rams</th>
+                        <th>Sheeps</th>
+                    </tr>
+                </thead>
+                <tbody id="table"></tbody>
+            </table>
+        </div>
+        <div>
+            <h3>Highscore</h3>
+            <div id="highscore"></div>
+        </div>
+    </div>
+    <script src="scripts/Libs/require.js" data-main="scripts/main"></script>
+</body>
+</html>
