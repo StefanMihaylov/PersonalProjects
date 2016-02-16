@@ -1,0 +1,47 @@
+﻿@using TweeterBackup.Web.Areas.Administration.Models
+@{
+    ViewBag.Title = "Users";
+    const string AuthorController = "User";
+}
+
+<div id="notification-container">
+    @{
+        Html.RenderPartial("_NotificationPartial");
+    }
+</div>
+
+<div class="row">
+    <div class="col-md-12 text-center">
+        <h3>User statistics</h3>
+        @(Html.Kendo()
+              .Grid<UserViewModel>()
+              .Name(AuthorController)
+              .Columns(columns =>
+              {
+                  columns.Bound(c => c.UserName).Width(100);
+                  columns.Bound(c => c.TweetsCount).Width(100)
+                      .ClientFooterTemplate("Total Count: #=sum#");
+                  columns.Bound(c => c.RetweetCount).Width(100)
+                      .ClientFooterTemplate("Total Count: #=sum#"); ;
+                  //columns.Command(command => { command.Destroy(); }).Width(100);
+              })
+              .HtmlAttributes(new { style = "text-align: center;" })
+              .Sortable()
+              .Pageable(pager => pager.Refresh(true))
+              .DataSource(dataSource => dataSource
+                .Ajax()
+                .PageSize(10)
+                .Events(events => events.Error("error_handler"))
+                .Model(model => model.Id(p => p.Id))
+                .Aggregates(aggregates => { 
+                    aggregates.Add(u => u.TweetsCount).Sum();
+                    aggregates.Add(u => u.RetweetCount).Sum();
+                })
+                .Aggregates(u => { u.Add(t => t.RetweetCount); })
+                .Read(read => read.Action("Read", AuthorController))
+                .Destroy(update => update.Action("Destroy", AuthorController)))
+        )
+    </div>
+</div>
+
+<script src="~/Scripts/kendo-error-handler.js"></script>

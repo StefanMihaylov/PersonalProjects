@@ -1,0 +1,27 @@
+﻿@using Products.Client.Models
+@model IEnumerable<ProductViewModel>
+
+@if (Model == null || Model.Count() == 0)
+{
+    <h3>No data</h3>
+}
+else
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Description</th>
+                <th>Product type</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model)
+            {
+                <tr>
+                    <td>@product.Description</td>
+                    <td>@product.ProductType</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

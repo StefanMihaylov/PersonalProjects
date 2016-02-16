@@ -1,0 +1,30 @@
+﻿@using TweeterBackup.Web.Extensions
+@model NotificationMessage
+
+<script type="text/javascript">
+
+    @if (Model != null)
+    {
+        if ( !string.IsNullOrWhiteSpace(Model.Message))
+        {
+            if (Model.ColourType == MessageColourType.Success)
+            {
+                @:toastr.success("@Model.Message");
+                    }
+            else if (Model.ColourType == MessageColourType.Error)
+            {
+                @:toastr.error("@Model.Message");
+                    }
+            else if (Model.ColourType == MessageColourType.Warning)
+            {
+                @:toastr.warning("@Model.Message");
+                }
+            else if (Model.ColourType == MessageColourType.Info)
+            {
+                @:toastr.info ("@Model.Message");
+            }
+        }
+
+        @:toastr.options = { "closeButton": true, "debug": false, "progressBar": true, "positionClass": "toast-top-right", "onclick": null, "showDuration": "300", "hideDuration": "1000", "timeOut": "3000", "extendedTimeOut": "1000", "showEasing": "swing", "hideEasing": "linear", "showMethod": "fadeIn", "hideMethod": "fadeOut" }
+           }
+</script>

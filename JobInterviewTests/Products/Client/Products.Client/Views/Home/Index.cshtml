@@ -1,0 +1,20 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="row text-center">
+    @using (Ajax.BeginForm("GetByUserId", "Home", new { area = string.Empty },
+        new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "result-container" },
+                    htmlAttributes: new { }))
+    {
+        <span>Enter User ID:</span>
+        <input type="number" name="userId" />
+        <input type="submit" class="btn btn-info" value="Find" />
+    }
+</div>
+
+<div id="result-container">
+    @{
+        Html.RenderPartial("_ResultPartial");
+    }
+</div>

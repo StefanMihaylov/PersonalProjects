@@ -1,0 +1,103 @@
+﻿@using TweeterBackup.Web.Models
+@using TweeterBackup.Web.Models.InputModels
+@{
+    ViewBag.Title = "Twitter Favourites";
+    const string AuthorController = "Favourites";
+    const string TweetsController = "Tweets";
+}
+
+<div id="notification-container">
+    @{
+        Html.RenderPartial("_NotificationPartial");
+    }
+</div>
+
+<div class="row">
+    <div class="col-md-4 text-center">
+        <h3>Twitter Author</h3>
+        @(Html.Kendo()
+              .Grid<FavouriteViewModel>()
+              .Name(AuthorController)
+              .Columns(columns =>
+              {
+                  columns.Bound(c => c.Image).Width(50).ClientTemplate("<img src='#:Image #' alt='icon' />");
+                  columns.Bound(c => c.Name).Width(100);
+                  columns.Command(command => { command.Destroy(); }).Width(100);
+              })
+              .ToolBar(toolbar => toolbar.Create())
+              .Editable(editable => editable.Mode(GridEditMode.PopUp))
+              .HtmlAttributes(new { style = "text-align: center;" })
+              .Sortable()
+              .Pageable(pager => pager.Refresh(true))
+              .Selectable(selectable => selectable.Mode(GridSelectionMode.Multiple))
+              .DataSource(dataSource => dataSource
+                .Ajax()
+                .PageSize(10)
+                .Events(events => events.Error("error_handler"))
+                .Model(model => model.Id(p => p.Id))
+                .Create(update => update.Action("Create", AuthorController))
+                .Read(read => read.Action("Read", AuthorController))
+                .Destroy(update => update.Action("Destroy", AuthorController)))
+        )
+    </div>
+    <div class="col-md-8 text-center">
+        <h3>Last Tweets</h3>
+        @(Html.Kendo()
+              .Grid<TweetInputViewModel>()
+              .Name(TweetsController)
+              .Columns(columns =>
+              {
+                  columns.Bound(c => c.Text).Width(200);
+                  columns.Bound(c => c.Id_str).Width(30)
+                      .ClientTemplate(@"<a class='k-button k-button-icontext' name='ajaxa' data-ajax='true' data-ajax-update='\#notification-container' data-ajax-method='GET' data-ajax-mode='replace' href='/Tweets/Save/#: Id_str #'>Save</a>");
+              })
+              .HtmlAttributes(new { style = "text-align: center;" })
+              .Pageable(pager => pager.Refresh(true))
+              .DataSource(dataSource => dataSource
+                .Ajax()
+                .ServerOperation(false)
+                .PageSize(10)
+                .Events(events => events.Error("error_handler"))
+                .Model(model => model.Id(p => p.Id_str))
+                .Read(read => read.Action("Read", TweetsController)))
+        )
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        function AddUrParams(url, methor, id) {
+            var lastIndex = url.lastIndexOf(methor);
+            var end = lastIndex + methor.length;
+            var newUrl = url.substr(0, end);
+            if (id) {
+                newUrl = newUrl + '/' + id;
+            }
+            return newUrl;
+        }
+
+        function changeUrl(grid, id) {
+            var urlOptions = grid.dataSource.transport.options;
+            urlOptions.read.url = AddUrParams(urlOptions.read.url, 'Read', id);
+            //  urlOptions.create.url = AddUrParams(urlOptions.create.url, 'Create', id);
+            grid.dataSource.read();
+        }
+
+        var $masterGrid = $("@("#" + AuthorController)").data("kendoGrid");
+        var $subGrid = $("@("#" + TweetsController)").data("kendoGrid");
+
+        $masterGrid.bind("change", function () {
+            var selectedBackup = this.dataItem(this.select()),
+                selectedId = selectedBackup.TwitterId;
+
+            changeUrl($subGrid, selectedId);
+        });
+
+        // page change
+        $masterGrid.dataSource.bind("change", function () {
+            changeUrl($subGrid, undefined);
+        });
+    });
+</script>
+
+<script src="~/Scripts/kendo-error-handler.js"></script>
