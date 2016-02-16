@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Task</title>
+    <style>
+        #output {
+            width: 750px;
+            height: 150px;
+            overflow-y: scroll;
+            border: 1px solid black;
+        }
+
+        .letters {
+            color: lightgray;
+        }
+
+        .digitsBold {
+            font-weight: bold;
+        }
+
+        .digitsColor {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<textarea id="input" rows="10" cols="100" placeholder="Input field..."></textarea>
+
+<div id="output"></div>
+
+<script>
+(function () {
+    window.onload = function () {
+        var inputTextAres = document.getElementById('input');
+
+        inputTextAres.addEventListener('change', function () {
+            var text = this.value;
+            var separatedText = splitTextAndNumbers(text);
+            separatedText = splitDigits(separatedText);
+            console.log(separatedText);
+
+            var spanElement = document.createElement('span');
+            var container = document.createDocumentFragment();
+
+            for (var i = 0, len = separatedText.length; i < len; i += 1) {
+                var currentPair = separatedText[i];
+
+                var currentSpan = spanElement.cloneNode(true);
+                currentSpan.innerHTML = currentPair.value;
+
+                var keys = currentPair.keys;
+                for (var j = 0, innerLen = keys.length; j < innerLen; j += 1) {
+                    switch (keys[j]) {
+                        case 'letters':
+                            currentSpan.className += ' letters';
+                            break;
+                        case 'digitsOdd':
+                            currentSpan.className += ' digitsColor';
+                            break;
+                        case 'digitsEqual':
+                            currentSpan.className += ' digitsBold';
+                            break;
+                    }
+                }
+
+                container.appendChild(currentSpan);
+            }
+
+            var resultContainer = document.getElementById('output');
+            resultContainer.innerHTML = ''; // TODO: delete all old child elements in while-loop
+            resultContainer.appendChild(container);
+        });
+
+        function splitTextAndNumbers(input) {
+            var result = [];
+            var currentPattern = [];
+            var pattern = 'letters';
+            for (var i = 0, len = input.length; i < len; i += 1) {
+                var char = input[i];
+                if (char >= '0' && char <= '9') {
+                    // digit
+                    if (pattern === 'letters') {
+                        if (currentPattern.length > 0) {
+                            result.push({type: pattern, value: currentPattern.join('')});
+                            currentPattern = [];
+                        }
+                        pattern = 'digits'
+                    }
+                    currentPattern.push(char);
+                }
+                else {
+                    // letter
+                    if (pattern === 'digits') {
+                        if (currentPattern.length > 0) {
+                            result.push({type: pattern, value: currentPattern.join('')});
+                            currentPattern = [];
+                        }
+                        pattern = 'letters'
+                    }
+                    currentPattern.push(char);
+                }
+            }
+
+            if (currentPattern.length > 0) {
+                result.push({type: pattern, value: currentPattern.join('')});
+            }
+
+            return result;
+        }
+
+        function splitDigits(inputArray) {
+            var currentPair;
+
+            var equal = '';
+            var maxEqual = {count: 0};
+            var odd = '';
+            var maxOdd = {count: 0};
+
+            for (var i = 0, len = inputArray.length; i < len; i += 1) {
+                currentPair = inputArray[i];
+                if (currentPair.type === 'digits') {
+                    var digits = currentPair.value;
+                    for (var j = 0, digitsLen = digits.length; j < digitsLen; j += 1) {
+                        if (equal === '') {
+                            equal = { count: 0, itemIndex: i, startIndex: j};
+                        }
+
+                        if (odd === '') {
+                            odd = { count: 0, itemIndex: i, startIndex: j};
+                        }
+
+                        // equal digits
+                        if (digits[j] === digits[equal.startIndex]) {
+                            equal.count++;
+                        }
+                        else {
+                            if (equal.count > maxEqual.count) {
+                                maxEqual.count = equal.count;
+                                maxEqual.startIndex = equal.startIndex;
+                                maxEqual.itemIndex = equal.itemIndex;
+                            }
+
+                            equal = { count: 1, itemIndex: i, startIndex: j};
+                        }
+
+                        // odd digits
+                        if (parseInt(digits[j]) % 2 === 1) {
+                            odd.count++;
+                        }
+                        else {
+                            if (odd.count > maxOdd.count) {
+                                maxOdd.count = odd.count;
+                                maxOdd.startIndex = odd.startIndex;
+                                maxOdd.itemIndex = odd.itemIndex;
+                            }
+
+                            odd = { count: 0, itemIndex: i, startIndex: j + 1};
+                        }
+                    }
+                    if (equal.count > maxEqual.count) {
+                        maxEqual.count = equal.count;
+                        maxEqual.startIndex = equal.startIndex;
+                        maxEqual.itemIndex = equal.itemIndex;
+                    }
+
+                    if (odd.count > maxOdd.count) {
+                        maxOdd.count = odd.count;
+                        maxOdd.startIndex = odd.startIndex;
+                        maxOdd.itemIndex = odd.itemIndex;
+                    }
+
+                    equal = '';
+                    odd = '';
+                }
+            }
+
+            if (maxEqual.count < 2) {
+                maxEqual = { count: '', itemIndex: '', startIndex: ''};
+            }
+            if (maxOdd.count < 2) {
+                maxOdd = undefined;
+            }
+
+            console.log(maxOdd);
+            console.log(maxEqual);
+
+            var result = [];
+            for (var i = 0, len = inputArray.length; i < len; i += 1) {
+                var currentValue = inputArray[i].value;
+                var currentKey = inputArray[i].type;
+                if (currentKey === 'letters') {
+                    result.push({value: currentValue, keys: ['letters'] });
+                }
+                else if (currentKey === 'digits') {
+
+                    // TODO: Refactor: to complicated
+                    if (i !== maxOdd.itemIndex && i !== maxEqual.itemIndex) {
+                        result.push({value: currentValue, keys: ['digits'] });
+                    }
+                    else if (i === maxOdd.itemIndex && i !== maxEqual.itemIndex) {
+                        var firstPart = currentValue.substring(0, maxOdd.startIndex);
+                        var secondPart = currentValue.substr(maxOdd.startIndex, maxOdd.count);
+                        var thirdPart = currentValue.substring(maxOdd.startIndex + maxOdd.count);
+
+                        if (firstPart.length) {
+                            result.push({value: firstPart, keys: ['digits'] });
+                        }
+
+                        if (secondPart.length) {
+                            result.push({value: secondPart, keys: ['digitsOdd'] });
+                        }
+
+                        if (thirdPart.length) {
+                            result.push({value: thirdPart, keys: ['digits'] });
+                        }
+                    }
+                    else if (i !== maxOdd.itemIndex && i === maxEqual.itemIndex) {
+                        var firstPart = currentValue.substring(0, maxEqual.startIndex);
+                        var secondPart = currentValue.substr(maxEqual.startIndex, maxEqual.count);
+                        var thirdPart = currentValue.substring(maxEqual.startIndex + maxEqual.count);
+
+                        if (firstPart.length) {
+                            result.push({value: firstPart, keys: ['digits'] });
+                        }
+
+                        if (secondPart.length) {
+                            result.push({value: secondPart, keys: ['digitsEqual'] });
+                        }
+
+                        if (thirdPart.length) {
+                            result.push({value: thirdPart, keys: ['digits'] });
+                        }
+                    }
+                    else {
+                        // ToDo Split two intervals into 5 or 6 parts
+                        result.push({value: currentValue, keys: ['digitsOdd', 'digitsEqual'] });
+                    }
+                }
+            }
+
+            return result;
+        }
+    };
+}());
+</script>
+</body>
+</html>
