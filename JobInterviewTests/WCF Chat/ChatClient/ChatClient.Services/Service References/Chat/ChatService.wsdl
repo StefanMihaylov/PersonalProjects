@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="ChatService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://hadess/chatserver/ChatService.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://hadess/chatserver/ChatService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://hadess/chatserver/ChatService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/ChatServer.WCF.Models" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IChatService_Login_InputMessage">
+    <wsdl:part name="parameters" element="tns:Login" />
+  </wsdl:message>
+  <wsdl:message name="IChatService_Login_OutputMessage">
+    <wsdl:part name="parameters" element="tns:LoginResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChatService_GetOtherPaticipants_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetOtherPaticipants" />
+  </wsdl:message>
+  <wsdl:message name="IChatService_GetOtherPaticipants_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetOtherPaticipantsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChatService_CreateChatRoom_InputMessage">
+    <wsdl:part name="parameters" element="tns:CreateChatRoom" />
+  </wsdl:message>
+  <wsdl:message name="IChatService_CreateChatRoom_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CreateChatRoomResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChatService_AddMessage_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddMessage" />
+  </wsdl:message>
+  <wsdl:message name="IChatService_AddMessage_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddMessageResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChatService_GetAllMessages_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllMessages" />
+  </wsdl:message>
+  <wsdl:message name="IChatService_GetAllMessages_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllMessagesResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IChatService">
+    <wsdl:operation name="Login">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChatService/Login" message="tns:IChatService_Login_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChatService/LoginResponse" message="tns:IChatService_Login_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetOtherPaticipants">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChatService/GetOtherPaticipants" message="tns:IChatService_GetOtherPaticipants_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChatService/GetOtherPaticipantsResponse" message="tns:IChatService_GetOtherPaticipants_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateChatRoom">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChatService/CreateChatRoom" message="tns:IChatService_CreateChatRoom_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChatService/CreateChatRoomResponse" message="tns:IChatService_CreateChatRoom_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddMessage">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChatService/AddMessage" message="tns:IChatService_AddMessage_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChatService/AddMessageResponse" message="tns:IChatService_AddMessage_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllMessages">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChatService/GetAllMessages" message="tns:IChatService_GetAllMessages_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChatService/GetAllMessagesResponse" message="tns:IChatService_GetAllMessages_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IChatService" type="tns:IChatService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Login">
+      <soap:operation soapAction="http://tempuri.org/IChatService/Login" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetOtherPaticipants">
+      <soap:operation soapAction="http://tempuri.org/IChatService/GetOtherPaticipants" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateChatRoom">
+      <soap:operation soapAction="http://tempuri.org/IChatService/CreateChatRoom" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddMessage">
+      <soap:operation soapAction="http://tempuri.org/IChatService/AddMessage" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllMessages">
+      <soap:operation soapAction="http://tempuri.org/IChatService/GetAllMessages" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ChatService">
+    <wsdl:port name="BasicHttpBinding_IChatService" binding="tns:BasicHttpBinding_IChatService">
+      <soap:address location="http://hadess/chatserver/ChatService.svc/Chat" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

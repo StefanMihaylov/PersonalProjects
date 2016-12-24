@@ -1,0 +1,12 @@
+﻿@using ChatClient.Web.Common
+
+@model ChatClient.Web.Models.LoginModel
+
+<div>Your name: @Model.CurrentUser.Username</div>
+@Html.Hidden("user", Model.CurrentUser.Username)
+
+<div>
+    @Html.DropDownList("otherUser", Model.OtherUsers.GetDropdownListItems(v => v.Username, t => t.Username), "-- choose another user --")
+
+    <button class="start-chat">Start Chat</button>
+</div>

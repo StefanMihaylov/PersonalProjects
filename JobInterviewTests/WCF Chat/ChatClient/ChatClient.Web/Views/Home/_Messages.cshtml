@@ -1,0 +1,8 @@
+﻿@model IEnumerable<ChatClient.Services.Chat.Message>
+
+@foreach (var message in Model)
+{
+    <div>
+        @string.Format("{0} - {1:HH:mm:ss} => {2}", message.ParticipantName, message.Date, message.Content)
+    </div>
+} 

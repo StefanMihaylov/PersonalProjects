@@ -1,0 +1,15 @@
+﻿@model ChatClient.Services.Chat.ChatRoom
+
+<div>
+    @Model.ParticipantAName - @Model.ParticipantBName
+</div>
+<div class="chat-window" style="border: 1px solid black; width: 400px; min-height: 50px; max-height: 400px; overflow-y: auto">
+
+</div>
+<div>
+    @Html.TextBox("message")
+    <button class="send-message">Send</button>   
+
+    @Html.HiddenFor(m => m.ParticipantAId)
+    @Html.HiddenFor(m => m.Id)
+</div>
