@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="ChatRoomsManager" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://localhost/ChatServer1/ChatRoomsService.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://localhost/ChatServer1/ChatRoomsService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost/ChatServer1/ChatRoomsService.svc?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xsd:import schemaLocation="http://localhost/ChatServer1/ChatRoomsService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/ChatServer.Common.Models" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IChatRoomsManager_OpenChatRoom_InputMessage">
+    <wsdl:part name="parameters" element="tns:OpenChatRoom" />
+  </wsdl:message>
+  <wsdl:message name="IChatRoomsManager_OpenChatRoom_OutputMessage">
+    <wsdl:part name="parameters" element="tns:OpenChatRoomResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChatRoomsManager_OpenChatRoomById_InputMessage">
+    <wsdl:part name="parameters" element="tns:OpenChatRoomById" />
+  </wsdl:message>
+  <wsdl:message name="IChatRoomsManager_OpenChatRoomById_OutputMessage">
+    <wsdl:part name="parameters" element="tns:OpenChatRoomByIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChatRoomsManager_GetAllOpenChatRooms_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllOpenChatRooms" />
+  </wsdl:message>
+  <wsdl:message name="IChatRoomsManager_GetAllOpenChatRooms_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllOpenChatRoomsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IChatRoomsManager_CloseChatRoomById_InputMessage">
+    <wsdl:part name="parameters" element="tns:CloseChatRoomById" />
+  </wsdl:message>
+  <wsdl:message name="IChatRoomsManager_CloseChatRoomById_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CloseChatRoomByIdResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IChatRoomsManager">
+    <wsdl:operation name="OpenChatRoom">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChatRoomsManager/OpenChatRoom" message="tns:IChatRoomsManager_OpenChatRoom_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChatRoomsManager/OpenChatRoomResponse" message="tns:IChatRoomsManager_OpenChatRoom_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="OpenChatRoomById">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChatRoomsManager/OpenChatRoomById" message="tns:IChatRoomsManager_OpenChatRoomById_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChatRoomsManager/OpenChatRoomByIdResponse" message="tns:IChatRoomsManager_OpenChatRoomById_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllOpenChatRooms">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChatRoomsManager/GetAllOpenChatRooms" message="tns:IChatRoomsManager_GetAllOpenChatRooms_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChatRoomsManager/GetAllOpenChatRoomsResponse" message="tns:IChatRoomsManager_GetAllOpenChatRooms_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CloseChatRoomById">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChatRoomsManager/CloseChatRoomById" message="tns:IChatRoomsManager_CloseChatRoomById_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChatRoomsManager/CloseChatRoomByIdResponse" message="tns:IChatRoomsManager_CloseChatRoomById_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IChatRoomsManager" type="tns:IChatRoomsManager">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="OpenChatRoom">
+      <soap:operation soapAction="http://tempuri.org/IChatRoomsManager/OpenChatRoom" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="OpenChatRoomById">
+      <soap:operation soapAction="http://tempuri.org/IChatRoomsManager/OpenChatRoomById" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllOpenChatRooms">
+      <soap:operation soapAction="http://tempuri.org/IChatRoomsManager/GetAllOpenChatRooms" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CloseChatRoomById">
+      <soap:operation soapAction="http://tempuri.org/IChatRoomsManager/CloseChatRoomById" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ChatRoomsManager">
+    <wsdl:port name="BasicHttpBinding_IChatRoomsManager" binding="tns:BasicHttpBinding_IChatRoomsManager">
+      <soap:address location="http://localhost/ChatServer1/ChatRoomsService.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

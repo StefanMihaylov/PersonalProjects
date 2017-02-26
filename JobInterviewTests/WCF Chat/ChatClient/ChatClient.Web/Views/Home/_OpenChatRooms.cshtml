@@ -1,0 +1,24 @@
+﻿@using ChatClient.Services.ChatRoomsService
+@model IEnumerable<ChatRoom>
+
+Open chat rooms:
+
+@if (Model.Count() > 0)
+{
+    <ul>
+        @foreach (var chatroom in Model)
+        {
+            <li>
+                @string.Join(" - ", chatroom.ParticipantNames)
+                <button class="open-chat-room pull-right" data-chat-room="@chatroom.Id">Open</button>
+                <span class="clearfix"></span>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <div>
+        No open chat rooms
+    </div>
+}

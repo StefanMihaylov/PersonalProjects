@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="f54e1e30-eeb2-4134-b468-9b681389a5c6" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost/chatserver1/ParticipantsService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="ParticipantsService3.xsd" MetadataType="Schema" ID="68c68b9b-35d5-400f-a5ee-6a67bbe2f612" SourceId="1" SourceUrl="http://localhost/ChatServer1/ParticipantsService.svc?xsd=xsd0" />
+    <MetadataFile FileName="ParticipantsService31.xsd" MetadataType="Schema" ID="c1983064-3e6c-4064-a5d4-991c89430fd0" SourceId="1" SourceUrl="http://localhost/ChatServer1/ParticipantsService.svc?xsd=xsd1" />
+    <MetadataFile FileName="ParticipantsService32.xsd" MetadataType="Schema" ID="2296f403-59c3-40f8-af03-46b8ae1bf779" SourceId="1" SourceUrl="http://localhost/ChatServer1/ParticipantsService.svc?xsd=xsd2" />
+    <MetadataFile FileName="ParticipantsService1.disco" MetadataType="Disco" ID="0f3dc7cb-6e31-48a8-91e5-eb9a5eb87512" SourceId="1" SourceUrl="http://localhost/ChatServer1/ParticipantsService.svc?disco" />
+    <MetadataFile FileName="ParticipantsManager1.wsdl" MetadataType="Wsdl" ID="87da23f6-2851-478d-a1dd-248762890890" SourceId="1" SourceUrl="http://localhost/ChatServer1/ParticipantsService.svc?wsdl" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

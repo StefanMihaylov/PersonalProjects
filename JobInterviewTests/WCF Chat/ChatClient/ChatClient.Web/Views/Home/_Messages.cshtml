@@ -1,8 +1,12 @@
-﻿@model IEnumerable<ChatClient.Services.Chat.Message>
+﻿@using ChatClient.Services.MessagesService
+@model IEnumerable<Message>
 
 @foreach (var message in Model)
 {
-    <div>
-        @string.Format("{0} - {1:HH:mm:ss} => {2}", message.ParticipantName, message.Date, message.Content)
+    <div style="@(message.IsSystemMessage ? "background-color: #d9edf7" : string.Empty)">
+        @string.Format("[{0:HH:mm:ss}] {1} {2}",
+                    message.Date,
+                    message.IsSystemMessage ? string.Empty : string.Format("{0}: ", message.ParticipantName),
+                    message.Content)
     </div>
-} 
+}

@@ -17,16 +17,14 @@ namespace ChatServer.Database
         public ChatRoom()
         {
             this.ChatMessages = new HashSet<ChatMessage>();
+            this.Participants = new HashSet<Participant>();
         }
     
         public int Id { get; set; }
-        public int ParticipantAId { get; set; }
-        public int ParticipantBId { get; set; }
         public System.DateTime StartDate { get; set; }
         public Nullable<System.DateTime> EndDate { get; set; }
     
         public virtual ICollection<ChatMessage> ChatMessages { get; set; }
-        public virtual Participant Participant { get; set; }
-        public virtual Participant Participant1 { get; set; }
+        public virtual ICollection<Participant> Participants { get; set; }
     }
 }

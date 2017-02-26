@@ -41,6 +41,8 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -49,7 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cache\BaseCacheService.cs" />
+    <Compile Include="DispatchFormatters\RawWebContentTypeMapper.cs" />
     <Compile Include="Extensions\FileInfoExtensions.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
@@ -58,13 +60,11 @@
     <Compile Include="Interfaces\IUnitOfWork.cs" />
     <Compile Include="Base\BaseUnitOfWork.cs" />
     <Compile Include="Base\GenericRepository.cs" />
-    <Compile Include="Loggers\BaseErrorLogger.cs" />
-    <Compile Include="Loggers\BaseFileWriter.cs" />
-    <Compile Include="Loggers\CriticalErrorLogger.cs" />
-    <Compile Include="Loggers\InfoLogger.cs" />
-    <Compile Include="Loggers\Interfaces\ICriticalErrorLogger.cs" />
-    <Compile Include="Loggers\Interfaces\IInfoLogger.cs" />
-    <Compile Include="Loggers\Interfaces\ILogger.cs" />
+    <Compile Include="Models\ChatRoom.cs" />
+    <Compile Include="Models\Message.cs" />
+    <Compile Include="Models\MessageInput.cs" />
+    <Compile Include="Models\Participant.cs" />
+    <Compile Include="Models\SystemMessageType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

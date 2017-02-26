@@ -4,9 +4,9 @@
     using System.Linq;
     using ChatServer.Common.Base;
     using ChatServer.Data.Interfaces;
-    using ChatServer.Data.Model.ParticipantRepository;
     using ChatServer.Database;
     using ChatServer.Database.Interfaces;
+    using DTO = ChatServer.Common.Models;
 
     public class ParticipantRepository : GenericRepository<Participant, INaxexChatDbContext>, IParticipantRepository
     {
@@ -15,54 +15,50 @@
         {
         }
 
-        public IEnumerable<ParticipantModel> GetAll()
+        public IEnumerable<DTO.Participant> GetAll()
         {
-            IEnumerable<ParticipantModel> participants = this.All()
-                                                             .Select(ParticipantModel.FromDb)
-                                                             .ToList();
-            return participants;
+            List<DTO.Participant> participantsDTO = this.All()
+                                                        .Select(p => (DTO.Participant)p)
+                                                        .ToList();
+            return participantsDTO;
         }
 
-        public IEnumerable<ParticipantModel> GetAll(string userName)
+        public IEnumerable<DTO.Participant> GetAll(string userName)
         {
-            IEnumerable<ParticipantModel> participants = this.All()
-                                                             .Where(p => p.Username != userName)
-                                                             .Select(ParticipantModel.FromDb)
-                                                             .ToList();
-            return participants;
+            var participantsDTO = this.All()
+                .Where(p => p.Username != userName)
+                .Select(p => (DTO.Participant)p)
+                .ToList();
+
+            return participantsDTO;
         }
 
-        public ParticipantModel GetParticipantById(int id)
+        public DTO.Participant GetParticipantById(int id)
         {
-            ParticipantModel participant = this.All()
+            Participant participant = this.All()
                                           .Where(p => p.Id == id)
-                                          .Select(ParticipantModel.FromDb)
                                           .FirstOrDefault();
             return participant;
         }
 
-        public ParticipantModel GetParticipantByName(string userName)
+        public DTO.Participant GetParticipantByName(string userName)
         {
-            ParticipantModel participant = this.All()
+            DTO.Participant participant = this.All()
                                           .Where(p => p.Username == userName)
-                                          .Select(ParticipantModel.FromDb)
                                           .FirstOrDefault();
             return participant;
         }
 
-        public ParticipantModel Login(string userName)
+        public DTO.Participant Login(string userName)
         {
-            ParticipantModel participant = this.GetParticipantByName(userName);
+            DTO.Participant participant = this.GetParticipantByName(userName);
             if (participant == null)
             {
-                this.Add(new Participant()
-                {
-                    Username = userName,
-                });
-
+                Participant dalParticipant = Participant.Create(userName);
+                this.Add(dalParticipant);
                 this.Context.SaveChanges();
 
-                participant = this.GetParticipantByName(userName);
+                participant = dalParticipant;
             }
 
             return participant;

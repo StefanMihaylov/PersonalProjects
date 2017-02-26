@@ -72,7 +72,10 @@
       <DependentUpon>ChatDbModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\INaxexChatDbContext.cs" />
+    <Compile Include="Partials\ChatMessage.cs" />
+    <Compile Include="Partials\ChatRoom.cs" />
     <Compile Include="Partials\NaxexChatDbContext.cs" />
+    <Compile Include="Partials\Participants.cs" />
     <Compile Include="Participant.cs">
       <DependentUpon>ChatDbModel.tt</DependentUpon>
     </Compile>

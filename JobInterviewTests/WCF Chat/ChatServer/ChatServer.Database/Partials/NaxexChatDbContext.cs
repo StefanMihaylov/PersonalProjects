@@ -7,6 +7,11 @@
 
     public partial class NaxexChatDbContext : INaxexChatDbContext
     {
+        public NaxexChatDbContext(string connectionString) 
+            : base(connectionString)
+        {
+        }
+
         public override int SaveChanges()
         {
             try

@@ -1,21 +1,18 @@
 ﻿namespace ChatServer.Data.Interfaces
 {
-    using System;
     using System.Collections.Generic;
-    using ChatServer.Common.Interfaces;
-    using ChatServer.Data.Model.ParticipantRepository;
-    using ChatServer.Database;
+    using ChatServer.Common.Models;
 
-    public interface IParticipantRepository : IRepository<Participant>
+    public interface IParticipantRepository //: IRepository<Database.Participant>
     {
-        ParticipantModel Login(string userName);
+        Participant Login(string userName);
 
-        IEnumerable<ParticipantModel> GetAll();
+        IEnumerable<Participant> GetAll();
 
-        IEnumerable<ParticipantModel> GetAll(string userName);
+        IEnumerable<Participant> GetAll(string userName);
 
-        ParticipantModel GetParticipantById(int id);
+        Participant GetParticipantById(int id);
 
-        ParticipantModel GetParticipantByName(string userName);
+        Participant GetParticipantByName(string userName);
     }
 }

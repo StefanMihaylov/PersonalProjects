@@ -67,10 +67,6 @@
       <Project>{5163de65-716a-4409-9f15-10728161c934}</Project>
       <Name>ChatServer.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ChatServer.Data.Model\ChatServer.Data.Model.csproj">
-      <Project>{3681cdc4-e19f-4685-a2a1-8a7cf8b25574}</Project>
-      <Name>ChatServer.Data.Model</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ChatServer.Database\ChatServer.Database.csproj">
       <Project>{71996197-1c69-4fb9-afc4-4cc4a771a51b}</Project>
       <Name>ChatServer.Database</Name>

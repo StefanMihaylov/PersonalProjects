@@ -4,14 +4,13 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="c209caaa0bd84030babfc2a12b485103" Name="Diagram1">
-        <EntityTypeShape EntityType="NaxexChatDbModel.ChatMessage" Width="1.5" PointX="5.25" PointY="4.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="NaxexChatDbModel.ChatRoom" Width="1.5" PointX="3" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="NaxexChatDbModel.Participant" Width="1.5" PointX="0.75" PointY="3" IsExpanded="true" />
-        <AssociationConnector Association="NaxexChatDbModel.FK_ChatMessages_ChatRooms" ManuallyRouted="false" />
-        <AssociationConnector Association="NaxexChatDbModel.FK_ChatMessages_Participants" ManuallyRouted="false" />
-        <AssociationConnector Association="NaxexChatDbModel.FK_ChatRooms_Participants" ManuallyRouted="false" />
-        <AssociationConnector Association="NaxexChatDbModel.FK_ChatRooms_Participants1" ManuallyRouted="false" />
+      <Diagram DiagramId="c209caaa0bd84030babfc2a12b485103" Name="Diagram1" ZoomLevel="107">
+        <EntityTypeShape EntityType="NaxexChatDbModel.ChatRoom" Width="1.5" PointX="0.875" PointY="3.25" />
+        <EntityTypeShape EntityType="NaxexChatDbModel.ChatMessage" Width="1.5" PointX="3.625" PointY="3.25" />
+        <AssociationConnector Association="NaxexChatDbModel.FK_ChatMessages_ChatRooms" />
+        <EntityTypeShape EntityType="NaxexChatDbModel.Participant" Width="1.5" PointX="3.75" PointY="0.5" />
+        <AssociationConnector Association="NaxexChatDbModel.FK_ChatMessages_Participants" />
+        <AssociationConnector Association="NaxexChatDbModel.ChatRoomParticipants" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

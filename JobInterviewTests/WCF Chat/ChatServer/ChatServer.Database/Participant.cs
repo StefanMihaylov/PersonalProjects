@@ -18,7 +18,6 @@ namespace ChatServer.Database
         {
             this.ChatMessages = new HashSet<ChatMessage>();
             this.ChatRooms = new HashSet<ChatRoom>();
-            this.ChatRooms1 = new HashSet<ChatRoom>();
         }
     
         public int Id { get; set; }
@@ -26,6 +25,5 @@ namespace ChatServer.Database
     
         public virtual ICollection<ChatMessage> ChatMessages { get; set; }
         public virtual ICollection<ChatRoom> ChatRooms { get; set; }
-        public virtual ICollection<ChatRoom> ChatRooms1 { get; set; }
     }
 }

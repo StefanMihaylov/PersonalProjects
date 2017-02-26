@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="faa9af51-5c84-4626-9abe-55d2ec2318ee" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost/chatserver1/ChatRoomsService.svc?wsdl" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="ChatRoomsManager1.wsdl" MetadataType="Wsdl" ID="f56114b6-b89b-4c32-87f3-fa0ae4e918e6" SourceId="1" SourceUrl="http://localhost/chatserver1/ChatRoomsService.svc?wsdl" />
+    <MetadataFile FileName="ChatRoomsService4.xsd" MetadataType="Schema" ID="b66b1768-a9c3-4e29-aa22-f31bc18abd22" SourceId="1" SourceUrl="http://localhost/ChatServer1/ChatRoomsService.svc?xsd=xsd3" />
+    <MetadataFile FileName="ChatRoomsService41.xsd" MetadataType="Schema" ID="4e2ec6c3-4cef-4e18-9212-385ba140a5c6" SourceId="1" SourceUrl="http://localhost/ChatServer1/ChatRoomsService.svc?xsd=xsd2" />
+    <MetadataFile FileName="ChatRoomsService42.xsd" MetadataType="Schema" ID="da6a9c11-045c-4d89-a30b-f05058ba3194" SourceId="1" SourceUrl="http://localhost/ChatServer1/ChatRoomsService.svc?xsd=xsd1" />
+    <MetadataFile FileName="ChatRoomsService43.xsd" MetadataType="Schema" ID="12cd50b1-a4fc-4708-807d-630d3e4589d8" SourceId="1" SourceUrl="http://localhost/ChatServer1/ChatRoomsService.svc?xsd=xsd0" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

@@ -5,9 +5,9 @@
     using System.Linq;
     using ChatServer.Common.Base;
     using ChatServer.Data.Interfaces;
-    using ChatServer.Data.Model.ParticipantRepository;
     using ChatServer.Database;
     using ChatServer.Database.Interfaces;
+    using DTO = ChatServer.Common.Models;
 
     public class ChatRoomRepository : GenericRepository<ChatRoom, INaxexChatDbContext>, IChatRoomRepository
     {
@@ -16,61 +16,72 @@
         {
         }
 
-        public IEnumerable<ChatRoomModel> GetAll()
+        public IEnumerable<DTO.ChatRoom> GetAll()
         {
-            IEnumerable<ChatRoomModel> chatRooms = this.All()
-                                                       .Select(ChatRoomModel.FromDb)
+            IEnumerable<DTO.ChatRoom> chatRooms = this.All()
+                                                       .Select(c => (DTO.ChatRoom)c)
                                                        .ToList();
+
             return chatRooms;
         }
 
-        public ChatRoomModel GetRoomById(int id)
+        public DTO.ChatRoom GetRoomById(int id)
         {
-            ChatRoomModel chatRoom = this.All()
+            DTO.ChatRoom chatRoom = this.All()
                                          .Where(c => c.Id == id)
-                                         .Select(ChatRoomModel.FromDb)
                                          .FirstOrDefault();
             return chatRoom;
         }
 
-        public ChatRoomModel AddChatRoom(string userNameA, string userNameB)
+        public DTO.ChatRoom GetChatRoom(IEnumerable<string> userNames)
         {
-            ChatRoomModel existingChatRoom = this.All()
-                                            .Where(c => (c.Participant.Username == userNameA && c.Participant1.Username == userNameB) ||
-                                                        (c.Participant.Username == userNameB && c.Participant1.Username == userNameA))
-                                            .Select(ChatRoomModel.FromDb)
+            DTO.ChatRoom existingChatRoom = this.All()
+                                            .Where(c => c.Participants.Select(p => p.Username).All(p => userNames.Contains(p)))
                                             .FirstOrDefault();
             if (existingChatRoom != null)
             {
-                if (existingChatRoom.ParticipantAName != userNameA)
-                {
-                    string firstUserName = existingChatRoom.ParticipantAName;
-                    existingChatRoom.ParticipantAName = existingChatRoom.ParticipantBName;
-                    existingChatRoom.ParticipantBName = firstUserName;
-
-                    int firstId = existingChatRoom.ParticipantAId;
-                    existingChatRoom.ParticipantAId = existingChatRoom.ParticipantBId;
-                    existingChatRoom.ParticipantBId = firstId;
-                }
-
                 return existingChatRoom;
             }
-
-            Participant participantA = this.GetParticipant(userNameA);
-            Participant participantB = this.GetParticipant(userNameB);
-
-            ChatRoom chatRoomInDb = new ChatRoom()
+            else
             {
-                Participant = participantA,
-                Participant1 = participantB,
-                StartDate = DateTime.Now,
-                EndDate = null,
-            };
+                ChatRoom chatRoomInDb = new ChatRoom()
+                {
+                    StartDate = DateTime.Now,
+                    EndDate = null,
+                };
 
-            this.Add(chatRoomInDb);
+                foreach (var userName in userNames)
+                {
+                    Participant participant = this.GetParticipant(userName);
+                    chatRoomInDb.Participants.Add(participant);
+                }
+
+                this.Add(chatRoomInDb);
+                this.Context.SaveChanges();
+
+                ChatRoom chatRoom = chatRoomInDb;
+                return chatRoom;
+            }
+        }
+
+        public DTO.ChatRoom UpdateStartDate(int chatRoomId)
+        {
+            ChatRoom chatRoom = this.GetChatRoomById(chatRoomId);
+
+            chatRoom.StartDate = DateTime.Now;
+            chatRoom.EndDate = null;
             this.Context.SaveChanges();
 
-            ChatRoomModel chatRoom = ChatRoomModel.FromDb.Compile()(chatRoomInDb);
+            return chatRoom;
+        }
+
+        public DTO.ChatRoom UpdateEndDate(int chatRoomId)
+        {
+            ChatRoom chatRoom = this.GetChatRoomById(chatRoomId);
+
+            chatRoom.EndDate = DateTime.Now;
+            this.Context.SaveChanges();
+
             return chatRoom;
         }
 
@@ -87,6 +98,17 @@
             }
 
             return participantA;
+        }
+
+        private ChatRoom GetChatRoomById(int chatRoomId)
+        {
+            ChatRoom chatRoom = this.GetById(chatRoomId);
+            if (chatRoom == null)
+            {
+                throw new ArgumentException(string.Format("Chat room #{0} not found in Db", chatRoomId));
+            }
+
+            return chatRoom;
         }
     }
 }

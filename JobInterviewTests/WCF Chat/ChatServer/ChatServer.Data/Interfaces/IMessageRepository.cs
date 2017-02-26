@@ -2,12 +2,12 @@
 {
     using System;
     using System.Collections.Generic;
-    using ChatServer.Data.Model.MessageRepository;
+    using ChatServer.Common.Models;
 
     public interface IMessageRepository
     {
-        void AddMessage(MessageInputModel message);
+        Message AddMessage(MessageInput message);
 
-        IEnumerable<MessageModel> GetMessages(int chatRoomId);
+        IEnumerable<Message> GetMessages(int chatRoomId);
     }
 }

@@ -16,11 +16,6 @@
         {
         }
 
-        public NaxexChatData()
-            : this(new NaxexChatDbContext())
-        {
-        }
-
         public IParticipantRepository Participants
         {
             get { return (ParticipantRepository)this.GetRepository<Participant>(); }

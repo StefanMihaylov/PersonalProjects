@@ -2,14 +2,18 @@
 {
     using System;
     using System.Collections.Generic;
-    using ChatServer.Data.Model.ParticipantRepository;
+    using ChatServer.Common.Models;
 
     public interface IChatRoomRepository
     {
-        ChatRoomModel AddChatRoom(string userNameA, string userNameB);
+        ChatRoom GetChatRoom(IEnumerable<string> userNames);
 
-        IEnumerable<ChatRoomModel> GetAll();
+        IEnumerable<ChatRoom> GetAll();
 
-        ChatRoomModel GetRoomById(int id);
+        ChatRoom GetRoomById(int id);
+
+        ChatRoom UpdateStartDate(int chatRoomId);
+
+        ChatRoom UpdateEndDate(int chatRoomId);
     }
 }

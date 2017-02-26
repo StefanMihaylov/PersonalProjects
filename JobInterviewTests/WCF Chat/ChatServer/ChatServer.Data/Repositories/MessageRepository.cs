@@ -5,9 +5,9 @@
     using System.Linq;
     using ChatServer.Common.Base;
     using ChatServer.Data.Interfaces;
-    using ChatServer.Data.Model.MessageRepository;
     using ChatServer.Database;
     using ChatServer.Database.Interfaces;
+    using DTO = ChatServer.Common.Models;
 
     public class MessageRepository : GenericRepository<ChatMessage, INaxexChatDbContext>, IMessageRepository
     {
@@ -16,29 +16,28 @@
         {
         }
 
-        public IEnumerable<MessageModel> GetMessages(int chatRoomId)
+        public IEnumerable<DTO.Message> GetMessages(int chatRoomId)
         {
-            IEnumerable<MessageModel> messages = this.All()
-                                                     .Where(m => m.ChatRoomId == chatRoomId)
-                                                     .OrderByDescending(m => m.Date)
-                                                     .Take(100)
-                                                     .OrderBy(m => m.Date)
-                                                     .Select(MessageModel.FromDb)
-                                                     .ToList();
+            if (chatRoomId < 1)
+            {
+                throw new ArgumentOutOfRangeException("chatRoomId");
+            }
+
+            List<DTO.Message> messages = this.All()
+                                             .Where(m => m.ChatRoomId == chatRoomId)
+                                             .AsEnumerable()
+                                             .Select(m => (DTO.Message)m)
+                                             .ToList();
             return messages;
         }
 
-        public void AddMessage(MessageInputModel message)
+        public DTO.Message AddMessage(DTO.MessageInput message)
         {
-            this.Add(new ChatMessage()
-            {
-                ChatRoomId = message.ChatRoomId,
-                ParticipantId = message.ParticipantId,
-                Message = message.Message,
-                Date = DateTime.Now,
-            });
-
+            ChatMessage messageInDb = ChatMessage.Create(message);
+            this.Add(messageInDb);
             this.Context.SaveChanges();
+
+            return messageInDb;
         }
     }
 }

@@ -41,10 +41,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseWebService.cs" />
-    <Compile Include="ChatService.cs" />
+    <Compile Include="DuplexServiceCallback.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Service References\Chat\Reference.cs">
+    <Compile Include="Service References\ChatRoomsService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\DuplexService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\MessagesService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\ParticipantsService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -54,38 +68,115 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-    <None Include="Service References\Chat\ChatClient.Services.Chat.ChatRoom.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\Chat\ChatClient.Services.Chat.Message.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\Chat\ChatClient.Services.Chat.Participant.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\Chat\ChatService.wsdl" />
-    <None Include="Service References\Chat\ChatService.xsd">
+    <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\Chat\ChatService1.xsd">
+    <None Include="Service References\ChatRoomsService\ChatClient.Services.ChatRoomsService.ChatRoom.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ChatRoomsService\ChatRoomsManager1.wsdl" />
+    <None Include="Service References\ChatRoomsService\ChatRoomsService4.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\Chat\ChatService2.xsd">
+    <None Include="Service References\ChatRoomsService\ChatRoomsService41.xsd">
       <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ChatRoomsService\ChatRoomsService42.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ChatRoomsService\ChatRoomsService43.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DuplexService\DuplexService.wsdl" />
+    <None Include="Service References\DuplexService\DuplexService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DuplexService\DuplexService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DuplexService\DuplexService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\MessagesService\ChatClient.Services.MessagesService.Message.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MessagesService\MessagesManager1.wsdl" />
+    <None Include="Service References\MessagesService\MessagesService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\MessagesService\MessagesService31.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\MessagesService\MessagesService32.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ParticipantsService\ChatClient.Services.ParticipantsService.Participant.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Service References\Chat\" />
+    <WCFMetadataStorage Include="Service References\ChatRoomsService\" />
+    <WCFMetadataStorage Include="Service References\DuplexService\" />
+    <WCFMetadataStorage Include="Service References\MessagesService\" />
+    <WCFMetadataStorage Include="Service References\ParticipantsService\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\Chat\configuration91.svcinfo" />
+    <None Include="Service References\ParticipantsService\configuration91.svcinfo" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\Chat\configuration.svcinfo" />
+    <None Include="Service References\ParticipantsService\configuration.svcinfo" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\Chat\Reference.svcmap">
+    <None Include="Service References\ParticipantsService\ParticipantsManager1.wsdl" />
+    <None Include="Service References\ParticipantsService\ParticipantsService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ParticipantsService\ParticipantsService31.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ParticipantsService\ParticipantsService32.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ParticipantsService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ChatRoomsService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ChatRoomsService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ChatRoomsService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\MessagesService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\MessagesService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\MessagesService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ParticipantsService\ParticipantsService1.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\DuplexService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\DuplexService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\DuplexService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>

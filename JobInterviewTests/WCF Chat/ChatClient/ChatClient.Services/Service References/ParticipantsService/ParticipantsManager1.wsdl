@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="ParticipantsManager" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://localhost/ChatServer1/ParticipantsService.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://localhost/ChatServer1/ParticipantsService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost/ChatServer1/ParticipantsService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/ChatServer.Common.Models" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IParticipantsManager_GetAllOnline_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllOnline" />
+  </wsdl:message>
+  <wsdl:message name="IParticipantsManager_GetAllOnline_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllOnlineResponse" />
+  </wsdl:message>
+  <wsdl:message name="IParticipantsManager_Login_InputMessage">
+    <wsdl:part name="parameters" element="tns:Login" />
+  </wsdl:message>
+  <wsdl:message name="IParticipantsManager_Login_OutputMessage">
+    <wsdl:part name="parameters" element="tns:LoginResponse" />
+  </wsdl:message>
+  <wsdl:message name="IParticipantsManager_Logout_InputMessage">
+    <wsdl:part name="parameters" element="tns:Logout" />
+  </wsdl:message>
+  <wsdl:message name="IParticipantsManager_Logout_OutputMessage">
+    <wsdl:part name="parameters" element="tns:LogoutResponse" />
+  </wsdl:message>
+  <wsdl:message name="IParticipantsManagerREST_GetAllOnlineREST_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllOnlineREST" />
+  </wsdl:message>
+  <wsdl:message name="IParticipantsManagerREST_GetAllOnlineREST_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllOnlineRESTResponse" />
+  </wsdl:message>
+  <wsdl:message name="IParticipantsManagerREST_LoginREST_InputMessage">
+    <wsdl:part name="parameters" element="tns:LoginREST" />
+  </wsdl:message>
+  <wsdl:message name="IParticipantsManagerREST_LoginREST_OutputMessage">
+    <wsdl:part name="parameters" element="tns:LoginRESTResponse" />
+  </wsdl:message>
+  <wsdl:message name="IParticipantsManagerREST_LogoutREST_InputMessage">
+    <wsdl:part name="parameters" element="tns:LogoutREST" />
+  </wsdl:message>
+  <wsdl:message name="IParticipantsManagerREST_LogoutREST_OutputMessage">
+    <wsdl:part name="parameters" element="tns:LogoutRESTResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IParticipantsManager">
+    <wsdl:operation name="GetAllOnline">
+      <wsdl:input wsaw:Action="http://tempuri.org/IParticipantsManager/GetAllOnline" message="tns:IParticipantsManager_GetAllOnline_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IParticipantsManager/GetAllOnlineResponse" message="tns:IParticipantsManager_GetAllOnline_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Login">
+      <wsdl:input wsaw:Action="http://tempuri.org/IParticipantsManager/Login" message="tns:IParticipantsManager_Login_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IParticipantsManager/LoginResponse" message="tns:IParticipantsManager_Login_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Logout">
+      <wsdl:input wsaw:Action="http://tempuri.org/IParticipantsManager/Logout" message="tns:IParticipantsManager_Logout_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IParticipantsManager/LogoutResponse" message="tns:IParticipantsManager_Logout_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="IParticipantsManagerREST">
+    <wsdl:operation name="GetAllOnlineREST">
+      <wsdl:input wsaw:Action="http://tempuri.org/IParticipantsManagerREST/GetAllOnlineREST" message="tns:IParticipantsManagerREST_GetAllOnlineREST_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IParticipantsManagerREST/GetAllOnlineRESTResponse" message="tns:IParticipantsManagerREST_GetAllOnlineREST_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="LoginREST">
+      <wsdl:input wsaw:Action="http://tempuri.org/IParticipantsManagerREST/LoginREST" message="tns:IParticipantsManagerREST_LoginREST_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IParticipantsManagerREST/LoginRESTResponse" message="tns:IParticipantsManagerREST_LoginREST_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="LogoutREST">
+      <wsdl:input wsaw:Action="http://tempuri.org/IParticipantsManagerREST/LogoutREST" message="tns:IParticipantsManagerREST_LogoutREST_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IParticipantsManagerREST/LogoutRESTResponse" message="tns:IParticipantsManagerREST_LogoutREST_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IParticipantsManager" type="tns:IParticipantsManager">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetAllOnline">
+      <soap:operation soapAction="http://tempuri.org/IParticipantsManager/GetAllOnline" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Login">
+      <soap:operation soapAction="http://tempuri.org/IParticipantsManager/Login" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Logout">
+      <soap:operation soapAction="http://tempuri.org/IParticipantsManager/Logout" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ParticipantsManager">
+    <wsdl:port name="BasicHttpBinding_IParticipantsManager" binding="tns:BasicHttpBinding_IParticipantsManager">
+      <soap:address location="http://localhost/ChatServer1/ParticipantsService.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

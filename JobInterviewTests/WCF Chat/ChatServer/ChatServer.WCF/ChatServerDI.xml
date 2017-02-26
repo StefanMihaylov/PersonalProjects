@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration xmlns="MyWindsorSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="MyWindsorSchema file://C:\Development\Djenne\Dev\ThirdParty\Castle\InversionOfControl\Castle.Windsor\windsor.xsd">
+  <facilities>
+    <!-- WCF Service Facility -->
+    <facility
+						id="wcf"
+						type="Castle.Facilities.WcfIntegration.WcfFacility, Castle.Facilities.WcfIntegration" />
+    <!-- Logger -->
+    <facility
+				   id="logging"
+				   type="Castle.Facilities.Logging.LoggingFacility, Castle.Facilities.Logging"
+				   loggingApi="log4net"
+				   configFile="log4net.config"
+				   customLoggerFactory=""/>
+  </facilities>
+  <components>
+
+    <!--Managers-->
+    <component id="IDuplexService"
+           service="ChatServer.Core.Interfaces.IDuplexService, ChatServer.Core"
+           type="ChatServer.Core.Managers.DuplexService, ChatServer.Core">
+      <parameters>
+        <participantManager>${IParticipantsManager}</participantManager>
+      </parameters>
+    </component>
+    
+    <component id="IMessagesManager"
+               service="ChatServer.Core.Interfaces.IMessagesManager, ChatServer.Core"
+               type="ChatServer.Core.Managers.MessagesManager, ChatServer.Core"
+               lifestyle="singleton">
+      <parameters>
+        <messagesProvider>${IMessagesProvider}</messagesProvider>
+      </parameters>
+    </component>
+
+    <component id="IChatRoomsManager"
+       service="ChatServer.Core.Interfaces.IChatRoomsManager, ChatServer.Core"
+       type="ChatServer.Core.Managers.ChatRoomsManager, ChatServer.Core"
+       lifestyle="singleton">
+      <parameters>
+        <chatRoomProvider>${IChatRoomsProvider}</chatRoomProvider>
+        <messageManager>${IMessagesManager}</messageManager>
+      </parameters>
+    </component>
+
+    <component id="IParticipantsManager"
+           service="ChatServer.Core.Interfaces.IParticipantsManager, ChatServer.Core"
+           type="ChatServer.Core.Managers.ParticipantsManager, ChatServer.Core"
+           lifestyle="singleton">
+      <parameters>
+        <participantsProvider>${IParticipantsProvider}</participantsProvider>
+        <chatRoomManager>${IChatRoomsManager}</chatRoomManager>
+      </parameters>
+      <forwardedTypes>
+        <add service="ChatServer.Core.Interfaces.IParticipantsManagerREST, ChatServer.Core"/>
+      </forwardedTypes>
+    </component>
+
+    <!--Providers-->
+    <component id="IMessagesProvider"
+       service="ChatServer.Core.Interfaces.IMessagesProvider, ChatServer.Core"
+       type="ChatServer.Core.Providers.MessagesProvider, ChatServer.Core">
+      <parameters>
+        <data>${INaxexChatData}</data>
+      </parameters>
+    </component>
+
+    <component id="IChatRoomsProvider"
+           service="ChatServer.Core.Interfaces.IChatRoomsProvider, ChatServer.Core"
+           type="ChatServer.Core.Providers.ChatRoomsProvider, ChatServer.Core">
+      <parameters>
+        <data>${INaxexChatData}</data>
+      </parameters>
+    </component>
+
+    <component id="IParticipantsProvider"
+               service="ChatServer.Core.Interfaces.IParticipantsProvider, ChatServer.Core"
+               type="ChatServer.Core.Providers.ParticipantsProvider, ChatServer.Core">
+      <parameters>
+        <data>${INaxexChatData}</data>
+      </parameters>
+    </component>
+
+    <!--Data-->
+    <component id="INaxexChatData"
+               service="ChatServer.Data.Interfaces.INaxexChatData, ChatServer.Data"
+               type="ChatServer.Data.NaxexChatData, ChatServer.Data"
+               lifestyle="singleton">
+      <parameters>
+        <context>${INaxexChatDbContext}</context>
+      </parameters>
+    </component>
+
+    <component id="INaxexChatDbContext"
+               service="ChatServer.Database.Interfaces.INaxexChatDbContext, ChatServer.Database"
+               type="ChatServer.Database.NaxexChatDbContext, ChatServer.Database"
+               lifestyle="singleton">
+      <parameters>
+        <connectionString>#{connectionString}</connectionString>
+      </parameters>
+    </component>
+
+  </components>
+</configuration>

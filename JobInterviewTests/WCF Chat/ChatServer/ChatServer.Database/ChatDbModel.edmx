@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="NaxexChatDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="NaxexChatDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="ChatMessages">
           <Key>
             <PropertyRef Name="Id" />
@@ -15,13 +15,19 @@
           <Property Name="Message" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="Date" Type="datetime" Nullable="false" />
         </EntityType>
+        <EntityType Name="ChatRoomParticipants">
+          <Key>
+            <PropertyRef Name="ChatRoomId" />
+            <PropertyRef Name="ParticipantId" />
+          </Key>
+          <Property Name="ChatRoomId" Type="int" Nullable="false" />
+          <Property Name="ParticipantId" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="ChatRooms">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ParticipantAId" Type="int" Nullable="false" />
-          <Property Name="ParticipantBId" Type="int" Nullable="false" />
           <Property Name="StartDate" Type="datetime" Nullable="false" />
           <Property Name="EndDate" Type="datetime" />
         </EntityType>
@@ -56,32 +62,33 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ChatRooms_Participants">
-          <End Role="Participants" Type="Self.Participants" Multiplicity="1" />
-          <End Role="ChatRooms" Type="Self.ChatRooms" Multiplicity="*" />
+        <Association Name="FK_ChatRoomParticipants_ChatRooms">
+          <End Role="ChatRooms" Type="Self.ChatRooms" Multiplicity="1" />
+          <End Role="ChatRoomParticipants" Type="Self.ChatRoomParticipants" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Participants">
+            <Principal Role="ChatRooms">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="ChatRooms">
-              <PropertyRef Name="ParticipantAId" />
+            <Dependent Role="ChatRoomParticipants">
+              <PropertyRef Name="ChatRoomId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ChatRooms_Participants1">
+        <Association Name="FK_ChatRoomParticipants_Participants1">
           <End Role="Participants" Type="Self.Participants" Multiplicity="1" />
-          <End Role="ChatRooms" Type="Self.ChatRooms" Multiplicity="*" />
+          <End Role="ChatRoomParticipants" Type="Self.ChatRoomParticipants" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Participants">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="ChatRooms">
-              <PropertyRef Name="ParticipantBId" />
+            <Dependent Role="ChatRoomParticipants">
+              <PropertyRef Name="ParticipantId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="NaxexChatDbModelStoreContainer">
           <EntitySet Name="ChatMessages" EntityType="Self.ChatMessages" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ChatRoomParticipants" EntityType="Self.ChatRoomParticipants" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ChatRooms" EntityType="Self.ChatRooms" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Participants" EntityType="Self.Participants" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_ChatMessages_ChatRooms" Association="Self.FK_ChatMessages_ChatRooms">
@@ -92,20 +99,46 @@
             <End Role="Participants" EntitySet="Participants" />
             <End Role="ChatMessages" EntitySet="ChatMessages" />
           </AssociationSet>
-          <AssociationSet Name="FK_ChatRooms_Participants" Association="Self.FK_ChatRooms_Participants">
-            <End Role="Participants" EntitySet="Participants" />
+          <AssociationSet Name="FK_ChatRoomParticipants_ChatRooms" Association="Self.FK_ChatRoomParticipants_ChatRooms">
             <End Role="ChatRooms" EntitySet="ChatRooms" />
+            <End Role="ChatRoomParticipants" EntitySet="ChatRoomParticipants" />
           </AssociationSet>
-          <AssociationSet Name="FK_ChatRooms_Participants1" Association="Self.FK_ChatRooms_Participants1">
+          <AssociationSet Name="FK_ChatRoomParticipants_Participants1" Association="Self.FK_ChatRoomParticipants_Participants1">
             <End Role="Participants" EntitySet="Participants" />
-            <End Role="ChatRooms" EntitySet="ChatRooms" />
+            <End Role="ChatRoomParticipants" EntitySet="ChatRoomParticipants" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="NaxexChatDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="NaxexChatDbContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ChatRooms" EntityType="NaxexChatDbModel.ChatRoom" />
+          <EntitySet Name="ChatMessages" EntityType="NaxexChatDbModel.ChatMessage" />
+          <AssociationSet Name="FK_ChatMessages_ChatRooms" Association="NaxexChatDbModel.FK_ChatMessages_ChatRooms">
+            <End Role="ChatRoom" EntitySet="ChatRooms" />
+            <End Role="ChatMessage" EntitySet="ChatMessages" />
+          </AssociationSet>
+          <EntitySet Name="Participants" EntityType="NaxexChatDbModel.Participant" />
+          <AssociationSet Name="FK_ChatMessages_Participants" Association="NaxexChatDbModel.FK_ChatMessages_Participants">
+            <End Role="Participant" EntitySet="Participants" />
+            <End Role="ChatMessage" EntitySet="ChatMessages" />
+          </AssociationSet>
+          <AssociationSet Name="ChatRoomParticipants" Association="NaxexChatDbModel.ChatRoomParticipants">
+            <End Role="ChatRoom" EntitySet="ChatRooms" />
+            <End Role="Participant" EntitySet="Participants" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="ChatRoom">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="ChatMessages" Relationship="NaxexChatDbModel.FK_ChatMessages_ChatRooms" FromRole="ChatRoom" ToRole="ChatMessage" />
+          <NavigationProperty Name="Participants" Relationship="NaxexChatDbModel.ChatRoomParticipants" FromRole="ChatRoom" ToRole="Participant" />
+        </EntityType>
         <EntityType Name="ChatMessage">
           <Key>
             <PropertyRef Name="Id" />
@@ -113,139 +146,90 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ChatRoomId" Type="Int32" Nullable="false" />
           <Property Name="ParticipantId" Type="Int32" Nullable="false" />
-          <Property Name="Message" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Message" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="ChatRoom" Relationship="Self.FK_ChatMessages_ChatRooms" FromRole="ChatMessages" ToRole="ChatRooms" />
-          <NavigationProperty Name="Participant" Relationship="Self.FK_ChatMessages_Participants" FromRole="ChatMessages" ToRole="Participants" />
+          <NavigationProperty Name="ChatRoom" Relationship="NaxexChatDbModel.FK_ChatMessages_ChatRooms" FromRole="ChatMessage" ToRole="ChatRoom" />
+          <NavigationProperty Name="Participant" Relationship="NaxexChatDbModel.FK_ChatMessages_Participants" FromRole="ChatMessage" ToRole="Participant" />
         </EntityType>
-        <EntityType Name="ChatRoom">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ParticipantAId" Type="Int32" Nullable="false" />
-          <Property Name="ParticipantBId" Type="Int32" Nullable="false" />
-          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="EndDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="ChatMessages" Relationship="Self.FK_ChatMessages_ChatRooms" FromRole="ChatRooms" ToRole="ChatMessages" />
-          <NavigationProperty Name="Participant" Relationship="Self.FK_ChatRooms_Participants" FromRole="ChatRooms" ToRole="Participants" />
-          <NavigationProperty Name="Participant1" Relationship="Self.FK_ChatRooms_Participants1" FromRole="ChatRooms" ToRole="Participants" />
-        </EntityType>
+        <Association Name="FK_ChatMessages_ChatRooms">
+          <End Type="NaxexChatDbModel.ChatRoom" Role="ChatRoom" Multiplicity="1" />
+          <End Type="NaxexChatDbModel.ChatMessage" Role="ChatMessage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ChatRoom">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ChatMessage">
+              <PropertyRef Name="ChatRoomId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityType Name="Participant">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="ChatMessages" Relationship="Self.FK_ChatMessages_Participants" FromRole="Participants" ToRole="ChatMessages" />
-          <NavigationProperty Name="ChatRooms" Relationship="Self.FK_ChatRooms_Participants" FromRole="Participants" ToRole="ChatRooms" />
-          <NavigationProperty Name="ChatRooms1" Relationship="Self.FK_ChatRooms_Participants1" FromRole="Participants" ToRole="ChatRooms" />
+          <Property Name="Username" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ChatMessages" Relationship="NaxexChatDbModel.FK_ChatMessages_Participants" FromRole="Participant" ToRole="ChatMessage" />
+          <NavigationProperty Name="ChatRooms" Relationship="NaxexChatDbModel.ChatRoomParticipants" FromRole="Participant" ToRole="ChatRoom" />
         </EntityType>
-        <Association Name="FK_ChatMessages_ChatRooms">
-          <End Role="ChatRooms" Type="Self.ChatRoom" Multiplicity="1" />
-          <End Role="ChatMessages" Type="Self.ChatMessage" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ChatRooms">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ChatMessages">
-              <PropertyRef Name="ChatRoomId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_ChatMessages_Participants">
-          <End Role="Participants" Type="Self.Participant" Multiplicity="1" />
-          <End Role="ChatMessages" Type="Self.ChatMessage" Multiplicity="*" />
+          <End Type="NaxexChatDbModel.Participant" Role="Participant" Multiplicity="1" />
+          <End Type="NaxexChatDbModel.ChatMessage" Role="ChatMessage" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Participants">
+            <Principal Role="Participant">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="ChatMessages">
+            <Dependent Role="ChatMessage">
               <PropertyRef Name="ParticipantId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ChatRooms_Participants">
-          <End Role="Participants" Type="Self.Participant" Multiplicity="1" />
-          <End Role="ChatRooms" Type="Self.ChatRoom" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Participants">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ChatRooms">
-              <PropertyRef Name="ParticipantAId" />
-            </Dependent>
-          </ReferentialConstraint>
+        <Association Name="ChatRoomParticipants">
+          <End Type="NaxexChatDbModel.ChatRoom" Role="ChatRoom" Multiplicity="*" />
+          <End Type="NaxexChatDbModel.Participant" Role="Participant" Multiplicity="*" />
         </Association>
-        <Association Name="FK_ChatRooms_Participants1">
-          <End Role="Participants" Type="Self.Participant" Multiplicity="1" />
-          <End Role="ChatRooms" Type="Self.ChatRoom" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Participants">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ChatRooms">
-              <PropertyRef Name="ParticipantBId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityContainer Name="NaxexChatDbContext" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="ChatMessages" EntityType="Self.ChatMessage" />
-          <EntitySet Name="ChatRooms" EntityType="Self.ChatRoom" />
-          <EntitySet Name="Participants" EntityType="Self.Participant" />
-          <AssociationSet Name="FK_ChatMessages_ChatRooms" Association="Self.FK_ChatMessages_ChatRooms">
-            <End Role="ChatRooms" EntitySet="ChatRooms" />
-            <End Role="ChatMessages" EntitySet="ChatMessages" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ChatMessages_Participants" Association="Self.FK_ChatMessages_Participants">
-            <End Role="Participants" EntitySet="Participants" />
-            <End Role="ChatMessages" EntitySet="ChatMessages" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ChatRooms_Participants" Association="Self.FK_ChatRooms_Participants">
-            <End Role="Participants" EntitySet="Participants" />
-            <End Role="ChatRooms" EntitySet="ChatRooms" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ChatRooms_Participants1" Association="Self.FK_ChatRooms_Participants1">
-            <End Role="Participants" EntitySet="Participants" />
-            <End Role="ChatRooms" EntitySet="ChatRooms" />
-          </AssociationSet>
-        </EntityContainer>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="NaxexChatDbModelStoreContainer" CdmEntityContainer="NaxexChatDbContext">
-          <EntitySetMapping Name="ChatMessages">
-            <EntityTypeMapping TypeName="NaxexChatDbModel.ChatMessage">
-              <MappingFragment StoreEntitySet="ChatMessages">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="ChatRoomId" ColumnName="ChatRoomId" />
-                <ScalarProperty Name="ParticipantId" ColumnName="ParticipantId" />
-                <ScalarProperty Name="Message" ColumnName="Message" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ChatRooms">
             <EntityTypeMapping TypeName="NaxexChatDbModel.ChatRoom">
               <MappingFragment StoreEntitySet="ChatRooms">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="ParticipantAId" ColumnName="ParticipantAId" />
-                <ScalarProperty Name="ParticipantBId" ColumnName="ParticipantBId" />
-                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
                 <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ChatMessages">
+            <EntityTypeMapping TypeName="NaxexChatDbModel.ChatMessage">
+              <MappingFragment StoreEntitySet="ChatMessages">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="ParticipantId" ColumnName="ParticipantId" />
+                <ScalarProperty Name="ChatRoomId" ColumnName="ChatRoomId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Participants">
             <EntityTypeMapping TypeName="NaxexChatDbModel.Participant">
               <MappingFragment StoreEntitySet="Participants">
-                <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <AssociationSetMapping Name="ChatRoomParticipants" TypeName="NaxexChatDbModel.ChatRoomParticipants" StoreEntitySet="ChatRoomParticipants">
+            <EndProperty Name="Participant">
+              <ScalarProperty Name="Id" ColumnName="ParticipantId" />
+            </EndProperty>
+            <EndProperty Name="ChatRoom">
+              <ScalarProperty Name="Id" ColumnName="ChatRoomId" />
+            </EndProperty>
+          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

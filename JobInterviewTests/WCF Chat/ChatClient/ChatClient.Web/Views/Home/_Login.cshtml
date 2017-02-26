@@ -1,12 +1,13 @@
 ﻿@using ChatClient.Web.Common
+@using ChatClient.Services.ParticipantsService
+@model Participant
 
-@model ChatClient.Web.Models.LoginModel
-
-<div>Your name: @Model.CurrentUser.Username</div>
-@Html.Hidden("user", Model.CurrentUser.Username)
-
-<div>
-    @Html.DropDownList("otherUser", Model.OtherUsers.GetDropdownListItems(v => v.Username, t => t.Username), "-- choose another user --")
-
-    <button class="start-chat">Start Chat</button>
+<div style="margin: 5px">
+    Your name: <strong>@Model.Username</strong>
+    @Html.ActionLink("Logout", "Logout", "Home", new { username = Model.Username }, new { @class = "btn btn-primary pull-right" })
+    <span class="clearfix"></span>
 </div>
+@Html.Hidden("user", Model.Username)
+@Html.Hidden("userId", Model.Id)
+
+<div class="contacts"></div>

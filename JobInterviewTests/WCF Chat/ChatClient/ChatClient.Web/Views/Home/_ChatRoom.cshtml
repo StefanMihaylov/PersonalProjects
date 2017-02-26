@@ -1,15 +1,18 @@
-﻿@model ChatClient.Services.Chat.ChatRoom
+﻿@using ChatClient.Services.ChatRoomsService
+@model ChatRoom
 
-<div>
-    @Model.ParticipantAName - @Model.ParticipantBName
+<div style="margin: 5px">
+    @string.Join(" - ", Model.ParticipantNames)
+    <button class="close-chat-room btn btn-primary pull-right">Close</button>
+    <span class="clearfix"></span>
 </div>
-<div class="chat-window" style="border: 1px solid black; width: 400px; min-height: 50px; max-height: 400px; overflow-y: auto">
+<div class="chat-window" style="border: 1px solid black; width: 100%; min-height: 50px; max-height: 400px; overflow-y: auto">
 
 </div>
 <div>
     @Html.TextBox("message")
-    <button class="send-message">Send</button>   
+    <button class="send-message pull-right">Send</button>
+    <span class="clearfix"></span>
 
-    @Html.HiddenFor(m => m.ParticipantAId)
-    @Html.HiddenFor(m => m.Id)
+    @Html.Hidden("chatRoomId", Model.Id)
 </div>

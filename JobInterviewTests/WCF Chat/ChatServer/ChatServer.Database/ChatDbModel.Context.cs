@@ -25,8 +25,8 @@ namespace ChatServer.Database
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<ChatMessage> ChatMessages { get; set; }
         public virtual DbSet<ChatRoom> ChatRooms { get; set; }
+        public virtual DbSet<ChatMessage> ChatMessages { get; set; }
         public virtual DbSet<Participant> Participants { get; set; }
     }
 }
