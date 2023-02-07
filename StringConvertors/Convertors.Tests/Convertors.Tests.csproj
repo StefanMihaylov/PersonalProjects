@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Convertors\Convertors.csproj" />
+    <ProjectReference Include="..\Convertors.NewtonJson\Convertors.NewtonJson.csproj" />
   </ItemGroup>
 
 </Project>

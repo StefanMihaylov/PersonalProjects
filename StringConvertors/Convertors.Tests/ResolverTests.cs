@@ -1,7 +1,6 @@
-﻿using System.Linq;
-using System.Web;
-using Convertors;
+﻿using System.Web;
 using Convertors.Models;
+using Convertors.NewtonJson;
 using Convertors.Tests.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
@@ -15,17 +14,7 @@ namespace Tests.Convertors
         [TestMethod]
         public void GetQueryStringTest()
         {
-            var model = new RequestModel()
-            {
-                FirstName = "John",
-                LastName = "Smith",
-                Amount = 24,
-                Currency = "USD",
-                CreditCardNumner = "4444333322221111",
-                Cvv = "123",
-                IPAddress = string.Empty,
-                ExpirationMonth = 3.ToString("d2"),
-            };
+            var model = GetModel();
 
             var settings = new JsonSerializerSettings
             {
@@ -53,6 +42,21 @@ namespace Tests.Convertors
             var respObj = JsonConvert.DeserializeObject<RequestModel>(responseAsJson);
 
             Assert.IsTrue(output.Length > 1);
+        }
+
+        private static RequestModel GetModel()
+        {
+            return new RequestModel()
+            {
+                FirstName = "John",
+                LastName = "Smith",
+                Amount = 24,
+                Currency = "USD",
+                CreditCardNumner = "4444333322221111",
+                Cvv = "123",
+                IPAddress = string.Empty,
+                ExpirationMonth = 3.ToString("d2"),
+            };
         }
     }
 }

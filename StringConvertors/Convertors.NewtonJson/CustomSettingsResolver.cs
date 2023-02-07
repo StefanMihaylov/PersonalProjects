@@ -7,7 +7,7 @@ using Convertors.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace Convertors
+namespace Convertors.NewtonJson
 {
     /// <summary>
     /// 

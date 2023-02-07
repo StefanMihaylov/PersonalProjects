@@ -1,4 +1,4 @@
-﻿namespace Convertors.Converters
+﻿namespace Convertors.Interfaces
 {
     public interface IStringConvertor
     {

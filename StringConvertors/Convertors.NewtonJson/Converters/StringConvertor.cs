@@ -3,13 +3,13 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Xml.Linq;
-
+using Convertors.Interfaces;
 using Convertors.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 
-namespace Convertors.Converters
+namespace Convertors.NewtonJson.Converters
 {
     /// <summary>
     /// Using Newtonsoft.Json, Version=6.0
@@ -19,22 +19,6 @@ namespace Convertors.Converters
     {
         private readonly JsonSerializerSettings m_JsonSerializerSettings;
         private readonly CustomSettings m_CustomSettings;
-
-        public StringConvertor()
-        {
-            m_CustomSettings = new CustomSettings
-            {
-                IgnoreEmptyValues = true,
-                IsCensoringEnabled = true,
-            };
-
-            m_JsonSerializerSettings = new JsonSerializerSettings()
-            {
-                Formatting = Formatting.Indented,
-                NullValueHandling = NullValueHandling.Ignore,
-                DefaultValueHandling = DefaultValueHandling.Ignore,
-            };
-        }
 
         public StringConvertor(JsonSerializerSettings jsonSerializerSettings, CustomSettings customSettings)
             : this()
@@ -55,16 +39,40 @@ namespace Convertors.Converters
             }
         }
 
+        public StringConvertor()
+        {
+            m_CustomSettings = new CustomSettings
+            {
+                IgnoreEmptyValues = true,
+                IsCensoringEnabled = true,
+            };
+
+            m_JsonSerializerSettings = new JsonSerializerSettings()
+            {
+                Formatting = Formatting.Indented,
+                NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Ignore,
+            };
+        }
+
+
         public string ToJson(object value, bool censored = true)
         {
+            if (value == null)
+            {
+                return string.Empty;
+            }
+
             JsonSerializerSettings settings = this.GetSettings(censored, false);
             string result = JsonConvert.SerializeObject(value, settings);
+
             return result;
         }
 
         public T FromJson<T>(string jsonString)
         {
             T result = JsonConvert.DeserializeObject<T>(jsonString);
+
             return result;
         }
 
@@ -87,6 +95,7 @@ namespace Convertors.Converters
             JObject jObject = JObject.FromObject(formDictionary);
 
             T result = jObject.ToObject<T>();
+
             return result;
         }
 

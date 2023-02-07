@@ -3,7 +3,7 @@ using System.Globalization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Convertors.Converters
+namespace Convertors.NewtonJson.Converters
 {
     internal class DecimalConverter : JsonConverter
     {
