@@ -2,11 +2,11 @@
 {
     public interface IStringConvertor
     {
-        T FromJson<T>(string jsonString);
+        T? FromJson<T>(string jsonString) where T : class;
 
-        T FromQueryString<T>(string queryString);
+        T? FromQueryString<T>(string queryString) where T : class;
 
-        T FromXmlString<T>(string xmlString, bool omitRootObject);
+        T? FromXmlString<T>(string xmlString, bool omitRootObject) where T : class;
 
         string ToJson(object value, bool censored = true);
 

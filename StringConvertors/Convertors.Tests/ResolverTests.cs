@@ -1,10 +1,8 @@
-﻿using System.Web;
-using Convertors.Models;
-using Convertors.NewtonJson;
+﻿using Convertors.Models;
+using Convertors.NewtonJson.Resolvers;
 using Convertors.Tests.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace Tests.Convertors
 {
@@ -14,7 +12,15 @@ namespace Tests.Convertors
         [TestMethod]
         public void GetQueryStringTest()
         {
-            var model = GetModel();
+            var model = new RequestModel("John", "Doe", 24, "USD", "4444333322221111", "123");
+            var expected = @"{
+  ""first_name"": ""John"",
+  ""last_name"": ""Doe"",
+  ""Amount"": 24.0,
+  ""currency"": ""USD"",
+  ""credit_card"": ""444433******1111"",
+  ""cvv2"": ""***""
+}";
 
             var settings = new JsonSerializerSettings
             {
@@ -30,33 +36,7 @@ namespace Tests.Convertors
 
             string output = JsonConvert.SerializeObject(model, settings);
 
-            var jObj = JObject.FromObject(model, JsonSerializer.Create(settings));
-            string queryOutput = string.Join("&", jObj.Properties().Select(s => $"{s.Name}={s.Value}"));
-
-            var dictionary = HttpUtility.ParseQueryString(queryOutput);
-            var formDictionary = dictionary.AllKeys
-                     .Where(p => dictionary[p] != "null")
-                     .ToDictionary(p => p, p => dictionary[p]);
-
-            string responseAsJson = JsonConvert.SerializeObject(formDictionary);
-            var respObj = JsonConvert.DeserializeObject<RequestModel>(responseAsJson);
-
-            Assert.IsTrue(output.Length > 1);
-        }
-
-        private static RequestModel GetModel()
-        {
-            return new RequestModel()
-            {
-                FirstName = "John",
-                LastName = "Smith",
-                Amount = 24,
-                Currency = "USD",
-                CreditCardNumner = "4444333322221111",
-                Cvv = "123",
-                IPAddress = string.Empty,
-                ExpirationMonth = 3.ToString("d2"),
-            };
+            Assert.AreEqual(expected, output);
         }
     }
 }

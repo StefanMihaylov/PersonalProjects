@@ -5,6 +5,8 @@ using System.Web;
 using System.Xml.Linq;
 using Convertors.Interfaces;
 using Convertors.Models;
+using Convertors.NewtonJson.Resolvers;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
@@ -20,41 +22,35 @@ namespace Convertors.NewtonJson.Converters
         private readonly JsonSerializerSettings m_JsonSerializerSettings;
         private readonly CustomSettings m_CustomSettings;
 
-        public StringConvertor(JsonSerializerSettings jsonSerializerSettings, CustomSettings customSettings)
-            : this()
+        public StringConvertor(IOptions<JsonSerializerSettings>? jsonSerializerSettings, IOptions<CustomSettings>? customSettings)
         {
-            if (jsonSerializerSettings != null)
+            if (jsonSerializerSettings?.Value != null)
             {
-                if (jsonSerializerSettings.ContractResolver != null)
+                if (jsonSerializerSettings.Value.ContractResolver != null)
                 {
                     throw new ArgumentException("JsonSerializerSettings ContractResolver must be Null.");
                 }
 
-                m_JsonSerializerSettings = jsonSerializerSettings;
+                m_JsonSerializerSettings = jsonSerializerSettings.Value;
             }
-
-            if (customSettings != null)
+            else
             {
-                m_CustomSettings = new CustomSettings(customSettings);
+                m_JsonSerializerSettings = new JsonSerializerSettings()
+                {
+                    Formatting = Formatting.Indented,
+                    NullValueHandling = NullValueHandling.Ignore,
+                    DefaultValueHandling = DefaultValueHandling.Ignore,
+                };
             }
-        }
 
-        public StringConvertor()
-        {
-            m_CustomSettings = new CustomSettings
+            m_CustomSettings = new CustomSettings()
             {
                 IgnoreEmptyValues = true,
                 IsCensoringEnabled = true,
             };
 
-            m_JsonSerializerSettings = new JsonSerializerSettings()
-            {
-                Formatting = Formatting.Indented,
-                NullValueHandling = NullValueHandling.Ignore,
-                DefaultValueHandling = DefaultValueHandling.Ignore,
-            };
+            m_CustomSettings.Update(customSettings?.Value);
         }
-
 
         public string ToJson(object value, bool censored = true)
         {
@@ -69,10 +65,9 @@ namespace Convertors.NewtonJson.Converters
             return result;
         }
 
-        public T FromJson<T>(string jsonString)
+        public T? FromJson<T>(string jsonString) where T : class
         {
-            T result = JsonConvert.DeserializeObject<T>(jsonString);
-
+            T? result = JsonConvert.DeserializeObject<T>(jsonString);
             return result;
         }
 
@@ -85,7 +80,7 @@ namespace Convertors.NewtonJson.Converters
             return queryOutput;
         }
 
-        public T FromQueryString<T>(string queryString)
+        public T? FromQueryString<T>(string queryString) where T : class
         {
             var dictionary = HttpUtility.ParseQueryString(queryString);
             var formDictionary = dictionary.AllKeys
@@ -94,7 +89,7 @@ namespace Convertors.NewtonJson.Converters
 
             JObject jObject = JObject.FromObject(formDictionary);
 
-            T result = jObject.ToObject<T>();
+            T? result = jObject.ToObject<T>();
 
             return result;
         }
@@ -108,7 +103,8 @@ namespace Convertors.NewtonJson.Converters
             var settingsSerialization = new JsonSerializerSettings();
             settingsSerialization.Converters.Add(converter);
 
-            XElement xmlElement = jObject.ToObject<XElement>(JsonSerializer.Create(settingsSerialization));
+            var json = JsonSerializer.Create(settingsSerialization);
+            XElement? xmlElement = jObject.ToObject<XElement>(json);
             XDocument xml = new XDocument(xmlElement);
 
             var writter = new StringWriter();
@@ -119,7 +115,7 @@ namespace Convertors.NewtonJson.Converters
             return xmlString;
         }
 
-        public T FromXmlString<T>(string xmlString, bool omitRootObject)
+        public T? FromXmlString<T>(string xmlString, bool omitRootObject) where T : class
         {
             var converter = new XmlNodeConverter { OmitRootObject = omitRootObject };
             var settings = new JsonSerializerSettings();
@@ -128,7 +124,7 @@ namespace Convertors.NewtonJson.Converters
             XElement xml = XElement.Parse(xmlString);
             JObject jObject = JObject.FromObject(xml, JsonSerializer.Create(settings));
 
-            T result = jObject.ToObject<T>();
+            T? result = jObject.ToObject<T>();
             return result;
         }
 
@@ -136,12 +132,15 @@ namespace Convertors.NewtonJson.Converters
 
         private JsonSerializerSettings GetSettings(bool isCensoringEnabled, bool camelCase)
         {
-            var customSettings = m_CustomSettings;
-            customSettings.IsCensoringEnabled = isCensoringEnabled;
-            customSettings.UseCamelCasePropertyNames = camelCase;
+            m_CustomSettings.Update(new CustomSettings()
+            {
+                IsCensoringEnabled = isCensoringEnabled,
+                UseCamelCasePropertyNames = camelCase,
+            });
 
             var settings = m_JsonSerializerSettings;
-            settings.ContractResolver = new CustomSettingsResolver(customSettings);
+
+            settings.ContractResolver = new CustomSettingsResolver(m_CustomSettings);
 
             return settings;
         }

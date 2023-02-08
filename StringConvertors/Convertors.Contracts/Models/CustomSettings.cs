@@ -14,46 +14,10 @@ namespace Convertors.Models
         {
             this.IgnorePropertyNameReplacement = false;
             this.IgnoreEmptyValues = false;
-
-            this.IsCensoringEnabled = false;
             this.CensorAttibuteType = typeof(DisableAuditingAttribute);
             this.CensorStringMask = "*Censored*";
-
+            this.IsCensoringEnabled = false;
             this.UseCamelCasePropertyNames = false;
-        }
-
-        public CustomSettings(CustomSettings other)
-            : this()
-        {
-            if (other.IgnorePropertyNameReplacement.HasValue)
-            {
-                this.IgnorePropertyNameReplacement = other.IgnorePropertyNameReplacement.Value;
-            }
-
-            if (other.IgnoreEmptyValues.HasValue)
-            {
-                this.IgnoreEmptyValues = other.IgnoreEmptyValues.Value;
-            }
-
-            if (other.IsCensoringEnabled.HasValue)
-            {
-                this.IsCensoringEnabled = other.IsCensoringEnabled.Value;
-            }
-
-            if (other.CensorAttibuteType != null)
-            {
-                this.CensorAttibuteType = other.CensorAttibuteType;
-            }
-
-            if (!string.IsNullOrWhiteSpace(other.CensorStringMask))
-            {
-                this.CensorStringMask = other.CensorStringMask;
-            }
-
-            if (other.UseCamelCasePropertyNames.HasValue)
-            {
-                this.UseCamelCasePropertyNames = other.UseCamelCasePropertyNames.Value;
-            }
         }
 
         /// <summary>
@@ -85,5 +49,44 @@ namespace Convertors.Models
         /// Gets or sets a value indicating whether [use camel case property names]. Default: False
         /// </summary>
         public bool? UseCamelCasePropertyNames { get; set; }
+
+
+        public void Update(CustomSettings? additionalSettings)
+        {
+            if (additionalSettings == null)
+            {
+                return;
+            }
+
+            if (additionalSettings.IgnorePropertyNameReplacement.HasValue)
+            {
+                this.IgnorePropertyNameReplacement = additionalSettings.IgnorePropertyNameReplacement.Value;
+            }
+
+            if (additionalSettings.IgnoreEmptyValues.HasValue)
+            {
+                this.IgnoreEmptyValues = additionalSettings.IgnoreEmptyValues.Value;
+            }
+
+            if (additionalSettings.IsCensoringEnabled.HasValue)
+            {
+                this.IsCensoringEnabled = additionalSettings.IsCensoringEnabled.Value;
+            }
+
+            if (additionalSettings.CensorAttibuteType != null)
+            {
+                this.CensorAttibuteType = additionalSettings.CensorAttibuteType;
+            }
+
+            if (!string.IsNullOrWhiteSpace(additionalSettings.CensorStringMask))
+            {
+                this.CensorStringMask = additionalSettings.CensorStringMask;
+            }
+
+            if (additionalSettings.UseCamelCasePropertyNames.HasValue)
+            {
+                this.UseCamelCasePropertyNames = additionalSettings.UseCamelCasePropertyNames.Value;
+            }
+        }
     }
 }

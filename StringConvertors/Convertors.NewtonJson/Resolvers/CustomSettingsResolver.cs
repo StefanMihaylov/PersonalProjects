@@ -7,7 +7,7 @@ using Convertors.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace Convertors.NewtonJson
+namespace Convertors.NewtonJson.Resolvers
 {
     /// <summary>
     /// 
@@ -64,8 +64,8 @@ namespace Convertors.NewtonJson
         private void CensorPropertyValue(MemberInfo member, JsonProperty property)
         {
             if (m_Settings.IsCensoringEnabled == false ||
-               (m_Settings.IsCensoringEnabled == true && (m_Settings.CensorAttibuteType == null ||
-                    string.IsNullOrWhiteSpace(m_Settings.CensorStringMask))))
+               m_Settings.IsCensoringEnabled == true && (m_Settings.CensorAttibuteType == null ||
+                    string.IsNullOrWhiteSpace(m_Settings.CensorStringMask)))
             {
                 return;
             }
@@ -105,7 +105,7 @@ namespace Convertors.NewtonJson
                 Type propertyType = reflectionPropety.PropertyType;
                 if (propertyType.IsAssignableFrom(typeof(string)))
                 {
-                    string value = reflectionPropety.GetValue(instance) as string;
+                    string? value = reflectionPropety.GetValue(instance) as string;
                     if (string.IsNullOrWhiteSpace(value))
                     {
                         return false;
@@ -116,7 +116,7 @@ namespace Convertors.NewtonJson
                     object objectValue = reflectionPropety.GetValue(instance);
                     if (objectValue != null)
                     {
-                        IEnumerable collection = objectValue as IEnumerable;
+                        IEnumerable? collection = objectValue as IEnumerable;
                         if (collection != null)
                         {
                             bool hasElements = collection.GetEnumerator().MoveNext();
@@ -141,7 +141,7 @@ namespace Convertors.NewtonJson
             }
         }
 
-        private string ToCamelCase(string input)
+        private string? ToCamelCase(string? input)
         {
             if (string.IsNullOrEmpty(input))
             {
@@ -157,7 +157,7 @@ namespace Convertors.NewtonJson
 
             for (int i = 0; i < chars.Length; i++)
             {
-                bool hasNext = (i + 1 < chars.Length);
+                bool hasNext = i + 1 < chars.Length;
                 if (i > 0 && hasNext && !char.IsUpper(chars[i + 1]))
                     break;
 
@@ -184,14 +184,14 @@ namespace Convertors.NewtonJson
                 _propertyInfo = propertyInfo;
             }
 
-            public void SetValue(object target, object value)
+            public void SetValue(object target, object? value)
             {
                 throw new NotSupportedException();
             }
 
             public object GetValue(object target)
             {
-                string value = _propertyInfo.GetValue(target) as string;
+                string? value = _propertyInfo.GetValue(target) as string;
                 if (string.IsNullOrWhiteSpace(value))
                 {
                     return target;

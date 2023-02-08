@@ -9,7 +9,7 @@ namespace Convertors.Tests.Models
         public string FirstName { get; set; }
 
         [JsonProperty(PropertyName = "last_name")]
-        public string LastName { get; set; }
+        public string? LastName { get; set; }
 
         public decimal Amount { get; set; }
 
@@ -24,10 +24,14 @@ namespace Convertors.Tests.Models
         [JsonProperty(PropertyName = "cvv2")]
         public string Cvv { get; set; }
 
-        [JsonProperty(PropertyName = "ipaddress")]
-        public string IPAddress { get; set; }
-
-        [JsonProperty(PropertyName = "expiration_month")]
-        public string ExpirationMonth { get; set; }
+        public RequestModel(string firstName, string? lastName, decimal amount, string currency, string creditCardNumner, string cvv)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            Amount = amount;
+            Currency = currency;
+            CreditCardNumner = creditCardNumner;
+            Cvv = cvv;
+        }
     }
 }
